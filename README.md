@@ -56,3 +56,7 @@ void LoadGraphicsSettings()
 ## Installing
 
 InterSUCC requires [SUCC](https://github.com/JimmyCushnie/SUCC) and [ClassImpl](https://github.com/pipe01/classimpl).
+
+## Limitations
+
+Due to the nature of InterSUCC's implementation, there's no way to set a default value as you're loading a value. Therefore, it is recommended that you set default values for your files using the [Default Files](https://github.com/JimmyCushnie/SUCC/wiki/Additional-DataFile-Functionality#default-files) feature.
