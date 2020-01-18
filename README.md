@@ -53,6 +53,6 @@ void LoadGraphicsSettings()
 }
 ```
 
-### Installing
+## Installing
 
 InterSUCC requires [SUCC](https://github.com/JimmyCushnie/SUCC) and [ClassImpl](https://github.com/pipe01/classimpl).
