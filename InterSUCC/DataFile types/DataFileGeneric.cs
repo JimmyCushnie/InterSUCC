@@ -13,9 +13,11 @@ namespace InterSUCC
         public TData Data { get; }
 
 
-        public DataFile(string path, string defaultFileText = null, bool autoSave = true, bool autoReload = false) : this(path, FileStyle.Default, defaultFileText, autoSave, autoReload) { }
+        public DataFile(string path, bool autoSave = true, bool autoReload = false, string defaultFileText = null) : this(path, FileStyle.Default, autoSave, autoReload, defaultFileText) 
+        { 
+        }
 
-        public DataFile(string path, FileStyle style, string defaultFileText = null, bool autoSave = true, bool autoReload = false) : base(path, style, defaultFileText, autoSave, autoReload)
+        public DataFile(string path, FileStyle style, bool autoSave = true, bool autoReload = false, string defaultFileText = null) : base(path, style, autoSave, autoReload, defaultFileText)
         {
             this.Data = DataUtility<TData>.GenerateDataObject(this);
         }

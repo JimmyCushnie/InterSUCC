@@ -57,6 +57,12 @@ void LoadGraphicsSettings()
 
 InterSUCC requires [SUCC](https://github.com/JimmyCushnie/SUCC) and [ClassImpl](https://github.com/pipe01/classimpl).
 
+InterSUCC can be installed via the Unity Package Manager. To do so, add the following to the `dependencies` array in your `manifest.json`:
+
+```json
+"com.jimmycushnie.intersucc": "https://github.com/JimmyCushnie/InterSUCC.git#unity"
+```
+
 ## Limitations
 
 Due to the nature of InterSUCC's implementation, there's no way to set a default value as you're loading a value. Therefore, it is recommended that you set default values for your files using the [Default Files](https://github.com/JimmyCushnie/SUCC/wiki/Additional-DataFile-Functionality#default-files) feature.
