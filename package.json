@@ -1,0 +1,14 @@
+{
+  "name": "com.jimmycushnie.intersucc",
+  "displayName": "InterSUCC",
+  "version": "1.0.0",
+  "unity": "2019.2",
+  "description": "Use SUCC without any magic strings",
+  "keywords": [
+    "succ",
+    "config"
+  ],
+  "category": "penis lmao",
+  "dependencies": {
+  }
+}
