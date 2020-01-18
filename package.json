@@ -10,5 +10,8 @@
   ],
   "category": "penis lmao",
   "dependencies": {
-  }
+    "com.jimmycushnie.succ": "1.2.0",
+    "com.pipe01.classimpl": "1.0.0"
+  },
+  "type": "library"
 }
