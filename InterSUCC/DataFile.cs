@@ -38,7 +38,7 @@ namespace InterSUCC
                             return file.GetNonGeneric(
                                 type: prop.PropertyType,
                                 key: prop.Name,
-                                DefaultValue: Activator.CreateInstance(prop.PropertyType));
+                                DefaultValue: prop.PropertyType.GetDefaultValue());
                         });
                     }
 
