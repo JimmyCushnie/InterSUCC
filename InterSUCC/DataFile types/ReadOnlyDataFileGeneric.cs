@@ -10,7 +10,7 @@ namespace InterSUCC
         public TData Data { get; }
 
 
-        public ReadOnlyDataFile(string path, string defaultFileText = null, bool autoReload = false) : base(path, defaultFileText, autoReload)
+        public ReadOnlyDataFile(string path, bool autoReload = false, string defaultFileText = null) : base(path, autoReload, defaultFileText)
         {
             this.Data = DataUtility<TData>.GenerateDataObject(this);
         }
