@@ -21,6 +21,7 @@ namespace InterSUCC
         public TOverrideData Data { get; }
 
         public TOverrideData Override => OverrideFile?.Data;
+        public bool OverrideExists => Override != null;
 
         public ConfigWithOverride(string basePath, string baseFileDefaultText = null, string overrideFilesDefaultText = null)
         {
@@ -35,6 +36,11 @@ namespace InterSUCC
         {
             string path = Path.Combine(directory, FileName + "_override");
             OverrideFile = new DataFile<TOverrideData>(path, defaultFileText: OverrideFilesDefaultText);
+        }
+
+        public void RemoveOverride()
+        {
+            OverrideFile = null;
         }
 
 
@@ -56,20 +62,18 @@ namespace InterSUCC
                         {
                             var files = o["__data"] as ConfigWithOverride<TBaseData, TOverrideData>;
 
-                            if (files.OverrideFile.KeyExists(prop.Name))
+                            TOverrideData target = null;
+
+                            if (files.OverrideExists && files.OverrideFile.KeyExists(prop.Name))
                             {
-                                return files.OverrideFile.GetNonGeneric(
-                                    type: prop.PropertyType,
-                                    key: prop.Name,
-                                    defaultValue: prop.PropertyType.GetDefaultValue());
+                                target = files.OverrideFile.Data;
                             }
                             else
                             {
-                                return files.BaseFile.GetNonGeneric(
-                                    type: prop.PropertyType,
-                                    key: prop.Name,
-                                    defaultValue: prop.PropertyType.GetDefaultValue());
+                                target = files.BaseFile.Data;
                             }
+
+                            return prop.GetMethod.Invoke(target, null);
                         });
                     }
 
@@ -78,10 +82,7 @@ namespace InterSUCC
                         impl.Setter(prop, (value, data) =>
                         {
                             var files = (ConfigWithOverride<TBaseData, TOverrideData>)data;
-                            files.BaseFile.SetNonGeneric(
-                                type: prop.PropertyType,
-                                key: prop.Name,
-                                value);
+                            prop.SetMethod.Invoke(files.BaseFile.Data, new object[] { value });
                         });
                     }
                 }
