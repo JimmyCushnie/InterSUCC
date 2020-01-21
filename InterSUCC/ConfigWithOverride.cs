@@ -18,7 +18,7 @@ namespace InterSUCC
         private string OverrideFilesDefaultText { get; }
 
         public string FileName { get; }
-        public TOverrideData Data { get; }
+        public TBaseData Data { get; }
 
         public TOverrideData Override => OverrideFile?.Data;
         public bool OverrideExists => Override != null;
@@ -44,15 +44,15 @@ namespace InterSUCC
         }
 
 
-        private static TOverrideData ImplDataCache;
-        private TOverrideData GenerateDataObject()
+        private static TBaseData ImplDataCache;
+        private TBaseData GenerateDataObject()
         {
-            if (!typeof(TOverrideData).IsInterface)
-                throw new Exception($"{nameof(TOverrideData)} must be an interface type");
+            if (!typeof(TBaseData).IsInterface)
+                throw new Exception($"{nameof(TBaseData)} must be an interface type");
 
             if (ImplDataCache == null)
             {
-                var impl = new Implementer<TOverrideData>(this.GetType());
+                var impl = new Implementer<TBaseData>(this.GetType());
 
                 foreach (var prop in impl.Properties)
                 {
@@ -62,18 +62,17 @@ namespace InterSUCC
                         {
                             var files = o["__data"] as ConfigWithOverride<TBaseData, TOverrideData>;
 
-                            TOverrideData target = null;
-
                             if (files.OverrideExists && files.OverrideFile.KeyExists(prop.Name))
                             {
-                                target = files.OverrideFile.Data;
+                                return files.OverrideFile.GetNonGeneric(
+                                    type: prop.PropertyType,
+                                    key: prop.Name,
+                                    defaultValue: prop.PropertyType.GetDefaultValue());
                             }
                             else
                             {
-                                target = files.BaseFile.Data;
+                                return prop.GetMethod.Invoke(files.BaseFile.Data, null);
                             }
-
-                            return prop.GetMethod.Invoke(target, null);
                         });
                     }
 
