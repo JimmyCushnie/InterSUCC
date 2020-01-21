@@ -11,7 +11,6 @@ namespace InterSUCC
     internal static class DataUtility<TData>
     {
         private static TData ImplDataCache;
-        private static PropertyInfo[] DataProperties;
 
         internal static TData GenerateDataObject(object dataObject)
         {
@@ -21,9 +20,8 @@ namespace InterSUCC
             if (ImplDataCache == null)
             {
                 var impl = new Implementer<TData>(dataObject.GetType());
-                DataProperties = impl.Properties;
 
-                foreach (var prop in DataProperties)
+                foreach (var prop in impl.Properties)
                 {
                     if (prop.GetMethod != null)
                     {
