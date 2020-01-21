@@ -9,6 +9,13 @@ using ClassImpl;
 
 namespace InterSUCC
 {
+    public class ConfigWithOverride<TData> : ConfigWithOverride<TData, TData> where TData : class
+    {
+        public ConfigWithOverride(string basePath, string baseFileDefaultText = null, string overrideFilesDefaultText = null) : base(basePath, baseFileDefaultText, overrideFilesDefaultText)
+        {
+        }
+    }
+
     public class ConfigWithOverride<TBaseData, TOverrideData>
         where TOverrideData : class
         where TBaseData : class, TOverrideData
