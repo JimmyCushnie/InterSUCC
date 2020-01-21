@@ -12,12 +12,7 @@ namespace InterSUCC
     {
         public TData Data { get; }
 
-
-        public DataFile(string path, bool autoSave = true, bool autoReload = false, string defaultFileText = null) : this(path, FileStyle.Default, autoSave, autoReload, defaultFileText) 
-        { 
-        }
-
-        public DataFile(string path, FileStyle style, bool autoSave = true, bool autoReload = false, string defaultFileText = null) : base(path, style, autoSave, autoReload, defaultFileText)
+        public DataFile(string path, string defaultFileText = null) : base(path, defaultFileText)
         {
             this.Data = DataUtility<TData>.GenerateDataObject(this);
         }

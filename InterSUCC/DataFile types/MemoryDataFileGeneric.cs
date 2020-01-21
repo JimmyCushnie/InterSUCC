@@ -16,9 +16,7 @@ namespace InterSUCC
 
         public MemoryDataFile() : this(string.Empty) { }
 
-        public MemoryDataFile(string rawFileText, bool autoSave = true) : this(rawFileText, FileStyle.Default, autoSave) { }
-
-        public MemoryDataFile(string rawFileText, FileStyle style, bool autoSave = true) : base(rawFileText, style, autoSave)
+        public MemoryDataFile(string rawFileText) : base(rawFileText)
         {
             this.Data = DataUtility<TData>.GenerateDataObject(this);
         }
