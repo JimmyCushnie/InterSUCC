@@ -11,29 +11,29 @@ namespace InterSUCC
 {
     public class ConfigWithOverride<TData> : ConfigWithOverride<TData, TData> where TData : class
     {
-        public ConfigWithOverride(string basePath, string baseFileDefaultText = null, string overrideFilesDefaultText = null) : base(basePath, baseFileDefaultText, overrideFilesDefaultText)
+        public ConfigWithOverride(string masterFilePath, string masterFileDefaultText = null, string overrideFilesDefaultText = null) : base(masterFilePath, masterFileDefaultText, overrideFilesDefaultText)
         {
         }
     }
 
-    public class ConfigWithOverride<TBaseData, TOverrideData>
+    public class ConfigWithOverride<TMasterData, TOverrideData>
         where TOverrideData : class
-        where TBaseData : class, TOverrideData
+        where TMasterData : class, TOverrideData
     {
-        private DataFile<TBaseData> BaseFile { get; }
+        private DataFile<TMasterData> MasterFile { get; }
         private DataFile<TOverrideData> OverrideFile { get; set; }
         private string OverrideFilesDefaultText { get; }
 
         public string FileName { get; }
-        public TBaseData Data { get; }
+        public TMasterData Data { get; }
 
         public TOverrideData Override => OverrideFile?.Data;
         public bool OverrideExists => Override != null;
 
-        public ConfigWithOverride(string basePath, string baseFileDefaultText = null, string overrideFilesDefaultText = null)
+        public ConfigWithOverride(string masterFilePath, string masterFileDefaultText = null, string overrideFilesDefaultText = null)
         {
-            BaseFile = new DataFile<TBaseData>(basePath, defaultFileText: baseFileDefaultText);
-            this.FileName = BaseFile.FileName;
+            MasterFile = new DataFile<TMasterData>(masterFilePath, defaultFileText: masterFileDefaultText);
+            this.FileName = MasterFile.FileName;
             this.OverrideFilesDefaultText = overrideFilesDefaultText;
 
             Data = GenerateDataObject();
@@ -51,15 +51,15 @@ namespace InterSUCC
         }
 
 
-        private static TBaseData ImplDataCache;
-        private TBaseData GenerateDataObject()
+        private static TMasterData ImplDataCache;
+        private TMasterData GenerateDataObject()
         {
-            if (!typeof(TBaseData).IsInterface)
-                throw new Exception($"{nameof(TBaseData)} must be an interface type");
+            if (!typeof(TMasterData).IsInterface)
+                throw new Exception($"{nameof(TMasterData)} must be an interface type");
 
             if (ImplDataCache == null)
             {
-                var impl = new Implementer<TBaseData>(this.GetType());
+                var impl = new Implementer<TMasterData>(this.GetType());
 
                 foreach (var prop in impl.Properties)
                 {
@@ -67,7 +67,7 @@ namespace InterSUCC
                     {
                         impl.Getter(prop).Callback(o =>
                         {
-                            var files = o["__data"] as ConfigWithOverride<TBaseData, TOverrideData>;
+                            var files = o["__data"] as ConfigWithOverride<TMasterData, TOverrideData>;
 
                             if (files.OverrideExists && files.OverrideFile.KeyExists(prop.Name))
                             {
@@ -78,7 +78,7 @@ namespace InterSUCC
                             }
                             else
                             {
-                                return prop.GetMethod.Invoke(files.BaseFile.Data, null);
+                                return prop.GetMethod.Invoke(files.MasterFile.Data, null);
                             }
                         });
                     }
@@ -87,8 +87,8 @@ namespace InterSUCC
                     {
                         impl.Setter(prop, (value, data) =>
                         {
-                            var files = (ConfigWithOverride<TBaseData, TOverrideData>)data;
-                            prop.SetMethod.Invoke(files.BaseFile.Data, new object[] { value });
+                            var files = (ConfigWithOverride<TMasterData, TOverrideData>)data;
+                            prop.SetMethod.Invoke(files.MasterFile.Data, new object[] { value });
                         });
                     }
                 }
