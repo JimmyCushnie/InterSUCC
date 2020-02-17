@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\classimpl\ClassImpl\ClassImpl.csproj" />
+    <PackageReference Include="ClassImpl" Version="1.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\SUCC\SUCC\SUCC.csproj" />
   </ItemGroup>
 
