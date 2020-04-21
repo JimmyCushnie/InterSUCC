@@ -43,3 +43,7 @@ InterSUCC can be installed via the Unity Package Manager. To do so, add the foll
 ## Limitations
 
 Due to the nature of InterSUCC's implementation, there's no way to set a default value as you're loading a value. Therefore, it is recommended that you set default values for your files using the [Default Files](https://github.com/JimmyCushnie/SUCC/wiki/Additional-DataFile-Functionality#default-files) feature.
+
+## ConfigWithOverride
+
+Todo document this feature
